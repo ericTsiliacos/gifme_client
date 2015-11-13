@@ -25,15 +25,17 @@ describe('SearchController', function () {
             $httpBackend.verifyNoOutstandingRequest();
         });
 
-        it('fetches a gif from the api with the specified term', function () {
-            var expectedUrl = 'http://localhost:5000/search.json?term=kittens';
+        describe('when fetching a gif from the api with the specified term succeeds', function () {
+            it("attaches the gifurl to the scope", function () {
+                var expectedUrl = 'http://localhost:5000/search.json?term=kittens';
+                var responseData = {url: "http://media0.giphy.com/media/PMausUvoqOgAU/200_d.gif"};
+                $httpBackend.expectGET(expectedUrl).respond(responseData, 200);
 
-            $httpBackend.expectGET(expectedUrl).respond({}, 200);
+                scope.search();
 
-            scope.search();
-
-            $httpBackend.flush();
-            expect(true).toEqual(true);
+                $httpBackend.flush();
+                expect(scope.gifUrl).toEqual("http://media0.giphy.com/media/PMausUvoqOgAU/200_d.gif");
+            });
         });
     });
 });
